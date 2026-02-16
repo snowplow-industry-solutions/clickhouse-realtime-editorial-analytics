@@ -6,7 +6,7 @@
 
 This application is a Snowplow solution accelerator showcasing real-time user behavior analytics using Snowplow event tracking and integrated with Clickhouse using event forwarding.
 
-The application consists of a example Media Publisher website written in Next.js with online news articles and advertisements.
+The application consists of an example Media Publisher website written in Next.js with online news articles and advertisements.
 
 It's intended to be used as part of the [Snowplow Real-time Editorial Analytics accelerator](https://docs.snowplow.io/tutorials/realtime-editorial-analytics-clickhouse/introduction). Check out the accelerator for information on running the project, and to learn more about Snowplow's features and capabilities.
 
