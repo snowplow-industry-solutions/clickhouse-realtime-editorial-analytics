@@ -160,26 +160,26 @@ export default function DashboardPage() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
                         Article
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Category
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Impressions
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Views
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Unique Viewers
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Avg. Scroll Depth
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                        Engaged Time (s)
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Avg. Engaged Time (s)
                       </th>
                     </tr>
                   </thead>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                       data.trendingArticles.map((article, index) => (
                         <tr key={article.article_title || index} className="hover:bg-gray-50">
                           <td className="px-4 py-3">
-                            <div className="text-sm font-medium text-gray-900 max-w-[200px] truncate" title={article.article_title}>
+                            <div className="text-sm font-medium text-gray-900 truncate" title={article.article_title}>
                               {article.article_title}
                             </div>
                           </td>
@@ -203,19 +203,19 @@ export default function DashboardPage() {
                               {article.article_category}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {article.impressions.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {article.views.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {article.total_article_views.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {article.avg_scroll_depth_pct}%
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {article.total_engaged_time_seconds}s
                           </td>
                         </tr>
@@ -244,20 +244,20 @@ export default function DashboardPage() {
                       <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Category
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Impressions
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Views
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Unique Viewers
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Avg. Scroll Depth
                       </th>
-                      <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                        Engaged Time (s)
+                      <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Avg. Engaged Time (s)
                       </th>
                     </tr>
                   </thead>
@@ -276,19 +276,19 @@ export default function DashboardPage() {
                               {category.category}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {category.impressions.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {category.views.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {category.total_article_views.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {category.avg_scroll_depth_pct}%
                           </td>
-                          <td className="px-4 py-3 text-right text-sm text-gray-600">
+                          <td className="px-4 py-3 text-center text-sm text-gray-600">
                             {category.total_engaged_time_seconds}s
                           </td>
                         </tr>
@@ -323,13 +323,13 @@ export default function DashboardPage() {
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Campaign
                       </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Impressions
                       </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Clicks
                       </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Ad CTR
                       </th>
                     </tr>
@@ -355,13 +355,13 @@ export default function DashboardPage() {
                           <td className="px-6 py-4 text-sm text-gray-600">
                             {ad.campaign_id}
                           </td>
-                          <td className="px-6 py-4 text-right text-sm text-gray-600">
+                          <td className="px-6 py-4 text-center text-sm text-gray-600">
                             {ad.impressions.toLocaleString()}
                           </td>
-                          <td className="px-6 py-4 text-right text-sm text-gray-900 font-medium">
+                          <td className="px-6 py-4 text-center text-sm text-gray-900 font-medium">
                             {ad.clicks.toLocaleString()}
                           </td>
-                          <td className="px-6 py-4 text-right">
+                          <td className="px-6 py-4 text-center">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               ad.ad_ctr >= 2 
                                 ? 'bg-green-100 text-green-800' 

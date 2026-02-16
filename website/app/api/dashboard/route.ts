@@ -132,24 +132,36 @@ async function getTrendingCategories(): Promise<TrendingCategory[]> {
           AND dvce_created_tstamp >= now() - INTERVAL 30 MINUTE
         GROUP BY article_category
       ),
+      page_metrics AS (
+        SELECT
+          page_title,
+          ROUND(AVG(
+            ROUND(100 * (LEAST(COALESCE(pp_yoffset_max, 0) + browser_viewheight, document_height) / toFloat64(document_height)))
+          ), 2) AS avg_scroll_depth_pct,
+          SUM(CASE WHEN event_name = 'page_ping' THEN 10 ELSE 0 END) AS total_engaged_time_seconds
+        FROM snowplow_article_interactions
+        WHERE event_name IN ('page_view', 'page_ping')
+          AND page_id IS NOT NULL
+          AND document_height IS NOT NULL
+          AND document_height > 0
+          AND dvce_created_tstamp >= now() - INTERVAL 30 MINUTE
+        GROUP BY page_title
+      ),
+      article_categories AS (
+        SELECT DISTINCT article_title, article_category
+        FROM snowplow_article_interactions
+        WHERE event_name = 'article_interaction'
+          AND article_category != ''
+          AND dvce_created_tstamp >= now() - INTERVAL 30 MINUTE
+      ),
       category_page_metrics AS (
         SELECT
-          a.article_category AS category,
-          ROUND(AVG(
-            ROUND(100 * (LEAST(COALESCE(p.pp_yoffset_max, 0) + p.browser_viewheight, p.document_height) / toFloat64(p.document_height)))
-          ), 2) AS avg_scroll_depth_pct,
-          SUM(CASE WHEN p.event_name = 'page_ping' THEN 10 ELSE 0 END) AS total_engaged_time_seconds
-        FROM snowplow_article_interactions p
-        INNER JOIN snowplow_article_interactions a
-          ON p.page_title = a.article_title
-          AND a.event_name = 'article_interaction'
-          AND a.article_category != ''
-        WHERE p.event_name IN ('page_view', 'page_ping')
-          AND p.page_id IS NOT NULL
-          AND p.document_height IS NOT NULL
-          AND p.document_height > 0
-          AND p.dvce_created_tstamp >= now() - INTERVAL 30 MINUTE
-        GROUP BY a.article_category
+          ac.article_category AS category,
+          ROUND(AVG(pm.avg_scroll_depth_pct), 2) AS avg_scroll_depth_pct,
+          ROUND(AVG(pm.total_engaged_time_seconds), 2) AS total_engaged_time_seconds
+        FROM page_metrics pm
+        INNER JOIN article_categories ac ON pm.page_title = ac.article_title
+        GROUP BY ac.article_category
       )
       SELECT 
         c.category,
