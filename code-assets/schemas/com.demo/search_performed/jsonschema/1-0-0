@@ -1,0 +1,42 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo",
+    "name": "search_performed",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Captures a search action by the user including the search term and resulting metadata.",
+  "properties": {
+    "term": {
+      "description": "The search term entered by the user.",
+      "type": "string",
+      "maxLength": 1024
+    },
+    "search_type": {
+      "description": "The type of search performed, a full search to the results page, or a quick search from the dropdown.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "full",
+        "quick"
+      ]
+    },
+    "total_results": {
+      "description": "The total number of results returned for the search.",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 9999999
+    }
+  },
+  "required": [
+    "term"
+  ],
+  "additionalProperties": false
+}

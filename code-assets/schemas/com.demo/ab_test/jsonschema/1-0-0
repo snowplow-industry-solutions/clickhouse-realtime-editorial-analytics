@@ -1,0 +1,43 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo",
+    "name": "ab_test",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Entity capturing information about an A/B test.",
+  "properties": {
+    "experiment_id": {
+      "description": "Unique identifier for the experiment.",
+      "type": "string",
+      "maxLength": 128
+    },
+    "experiment_name": {
+      "description": "Human-readable name of the experiment.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 128
+    },
+    "variant_id": {
+      "description": "Unique identifier for the variant.",
+      "type": "string",
+      "maxLength": 128
+    },
+    "variant_name": {
+      "description": "Human-readable name of the variant.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 128
+    }
+  },
+  "required": [
+    "experiment_id",
+    "variant_id"
+  ]
+}

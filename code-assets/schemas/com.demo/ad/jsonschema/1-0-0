@@ -1,0 +1,113 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo",
+    "name": "ad",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Details of an advertisement shown or interacted with",
+  "properties": {
+    "ad_id": {
+      "description": "Identifier of the ad shown or interacted with.",
+      "type": "string",
+      "maxLength": 256
+    },
+    "cost_model": {
+      "description": "The cost model of the ad",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "cpc",
+        "cpm",
+        "cpa"
+      ],
+      "maxLength": 256
+    },
+    "cost": {
+      "description": "The cost of the ad",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 9999
+    },
+    "type": {
+      "description": "Type of ad, e.g., banner, video, native.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "banner",
+        "video",
+        "native",
+        "interstitial",
+        "rich_media",
+        "sponsored_content",
+        "search",
+        "email",
+        "audio"
+      ],
+      "maxLength": 256
+    },
+    "campaign_id": {
+      "description": "ID of the marketing campaign.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 256
+    },
+    "placement": {
+      "description": "Where the ad was placed (e.g., header, sidebar, in-feed).",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "header",
+        "sidebar",
+        "footer",
+        "in-feed",
+        "native",
+        "search_results",
+        "content_body",
+        "video_pre-roll"
+      ],
+      "maxLength": 256
+    },
+    "position": {
+      "description": "The position/order in which the ad appeared.",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 9999999
+    },
+    "advertiser_id": {
+      "description": "Identifier for the advertiser.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1024
+    },
+    "creative_id": {
+      "description": "ID of the creative variation shown.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1024
+    }
+  },
+  "required": [
+    "ad_id"
+  ]
+}

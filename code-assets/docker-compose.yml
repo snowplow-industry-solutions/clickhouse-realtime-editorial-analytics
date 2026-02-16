@@ -1,0 +1,182 @@
+services:
+  website:
+    image: node:22-slim
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/website/.next
+    command: sh -c "npm install && cd website && npx next dev"
+    environment:
+      - NODE_ENV=development
+      - CLICKHOUSE_HOST=${CLICKHOUSE_HOST}
+      - CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE}
+      - CLICKHOUSE_TABLE=${CLICKHOUSE_TABLE}
+      - CLICKHOUSE_KEY=${CLICKHOUSE_KEY}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER}
+    depends_on:
+      - micro
+  micro:
+    image: snowplow/snowplow-micro:3.0.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./schemas:/config/iglu-client-embedded/schemas
+    command: --output-tsv --destination http://snowbridge:8080
+    depends_on:
+      - snowbridge
+  snowbridge:
+    image: snowplow/snowbridge:3.6.2
+    ports:
+      - "8080:8080"
+    # stdin_open: true
+    environment:
+      - SNOWBRIDGE_CONFIG_FILE=/tmp/config.hcl
+      - CLICKHOUSE_HOST=${CLICKHOUSE_HOST}
+      - CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE}
+      - CLICKHOUSE_TABLE=${CLICKHOUSE_TABLE}
+      - CLICKHOUSE_KEY=${CLICKHOUSE_KEY}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER}
+    configs:
+      - source: snowbridge_config
+        target: /tmp/config.hcl
+      - source: snowbridge_script
+        target: /tmp/snowbridge-script.js
+configs:
+  snowbridge_config:
+    content: |
+      license {
+        accept = true
+      }
+
+      source {
+        use "http" {
+          url = "0.0.0.0:8080"
+        }
+      }
+
+      transform {
+        use "spEnrichedToJson" {
+        }
+      }
+
+      transform {
+        use "spEnrichedFilter" {
+        atomic_field  = "event_name"
+        regex         = "^(article_interaction|page_view|page_ping|ad_interaction)$"
+        filter_action = "keep"
+        }
+      }
+
+      transform {
+        use "js" {
+          script_path = "/tmp/snowbridge-script.js"
+          snowplow_mode = true
+          remove_nulls = true
+        }
+      }
+
+      target {
+        use "http" {
+          url = "$${ env.CLICKHOUSE_HOST }/?query=INSERT%20INTO%20$${ env.CLICKHOUSE_DATABASE }.$${ env.CLICKHOUSE_TABLE }%20FORMAT%20JSONEachRow"
+          content_type = "application/json"
+          headers = "{\"X-ClickHouse-Key\":\"$${ env.CLICKHOUSE_KEY }\",\"X-ClickHouse-User\":\"$${ env.CLICKHOUSE_USER }\"}"
+          dynamic_headers = false
+          include_timing_headers = false
+
+          request_timeout_in_millis = 900
+          enable_tls = true
+          skip_verify_tls = false
+          response_rules {
+            invalid {
+              http_codes = []
+          }
+          setup {
+            http_codes = []
+          }
+        }
+      }
+      }
+
+      failure_target {
+        use "stdout" {}
+      }
+
+      log_level = "debug"
+  snowbridge_script:
+    content: |
+      function main(input) {
+        var spData = input.Data;
+        if (spData["unstruct_event_com_demo_media_article_interaction_1"]) {
+          spData['article_interaction_type'] = spData["unstruct_event_com_demo_media_article_interaction_1"]["type"];
+        } else {
+          spData['article_interaction_type']  = null
+        }
+        if (spData["contexts_com_demo_media_article_1"]) {
+          spData['article_id'] = spData["contexts_com_demo_media_article_1"][0]["article_id"];
+        } else {
+          spData['article_id'] = null
+        }
+        if (spData["contexts_com_demo_media_article_1"]) {
+          spData['article_title'] = spData["contexts_com_demo_media_article_1"][0]["title"];
+        } else {
+          spData['article_title'] = null
+        }
+        if (spData["contexts_com_demo_media_article_1"]) {
+          spData['article_category'] = spData["contexts_com_demo_media_article_1"][0]["category"];
+        } else {
+          spData['article_category'] = null
+        }
+        if (spData["contexts_com_demo_media_article_1"]) {
+          spData['article_listing_position'] = spData["contexts_com_demo_media_article_1"][0]["position"];
+        } else {
+          spData['article_listing_position'] = null
+        }
+        if (spData["unstruct_event_com_demo_ad_interaction_1"]) {
+          spData['ad_interaction_type'] = spData["unstruct_event_com_demo_ad_interaction_1"]["type"];
+        } else {
+          spData['ad_interaction_type'] = null
+        }
+        if (spData["contexts_com_demo_ad_1"]) {
+          spData['ad_id'] = spData["contexts_com_demo_ad_1"][0]["ad_id"];
+        } else {
+          spData['ad_id'] = null
+        }
+        if (spData["contexts_com_demo_ad_1"]) {
+          spData['advertiser_id'] = spData["contexts_com_demo_ad_1"][0]["advertiser_id"];
+        } else {
+          spData['advertiser_id'] = null
+        }
+        if (spData["contexts_com_demo_ad_1"]) {
+          spData['campaign_id'] = spData["contexts_com_demo_ad_1"][0]["campaign_id"];
+        } else {
+          spData['campaign_id'] = null
+        }
+
+      return {
+        Data: {
+            event_id: spData["event_id"],
+            event_name: spData["event_name"],
+            article_interaction_type: spData['article_interaction_type'],
+            domain_userid: spData["domain_userid"],
+            domain_sessionid: spData["domain_sessionid"],
+            dvce_created_tstamp: spData['dvce_created_tstamp'],
+            page_id: spData["contexts_com_snowplowanalytics_snowplow_web_page_1"][0]["id"],
+            page_title: spData["page_title"],
+            browser_viewheight: spData['br_viewheight'],
+            document_height: spData['doc_height'],
+            pp_yoffset_min: spData['pp_yoffset_min'],
+            pp_yoffset_max: spData['pp_yoffset_max'],
+            article_id: spData['article_id'],
+            article_title: spData['article_title'],
+            article_category: spData['article_category'],
+            article_listing_position: spData['article_listing_position'],
+            ad_interaction_type: spData['ad_interaction_type'],
+            ad_id: spData['ad_id'],
+            advertiser_id: spData['advertiser_id'],
+            campaign_id: spData['campaign_id']
+        }
+      };
+      }

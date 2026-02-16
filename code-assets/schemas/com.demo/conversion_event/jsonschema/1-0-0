@@ -1,0 +1,39 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo",
+    "name": "conversion_event",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Tracks types of user conversions such as purchases, signups, downloads, etc.",
+  "properties": {
+    "conversion_type": {
+      "type": "string",
+      "enum": [
+        "purchase",
+        "add_to_cart",
+        "begin_checkout",
+        "complete_checkout",
+        "lead_submission",
+        "form_completion",
+        "newsletter_signup",
+        "signup",
+        "login",
+        "download",
+        "subscribe",
+        "trial_start",
+        "booking",
+        "quote_request",
+        "reservation",
+        "donation"
+      ],
+      "description": "The type of conversion the user completed."
+    }
+  },
+  "required": [
+    "conversion_type"
+  ],
+  "additionalProperties": false
+}

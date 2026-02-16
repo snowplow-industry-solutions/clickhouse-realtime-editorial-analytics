@@ -1,0 +1,65 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo.media",
+    "name": "article",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Entity representing an article.",
+  "properties": {
+    "article_id": {
+      "description": "The unique identifier for the article.",
+      "type": "string",
+      "maxLength": 128
+    },
+    "title": {
+      "description": "The title of the article.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1024
+    },
+    "category": {
+      "description": "The category under which the article is classified.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 128
+    },
+    "author": {
+      "description": "The author of the article.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 256
+    },
+    "position": {
+      "description": "The position of the article in the search results or display.",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 99999
+    },
+    "tags": {
+      "description": "A list of tags associated with the article.",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "maxLength": 128
+      }
+    }
+  },
+  "required": [
+    "article_id"
+  ]
+}

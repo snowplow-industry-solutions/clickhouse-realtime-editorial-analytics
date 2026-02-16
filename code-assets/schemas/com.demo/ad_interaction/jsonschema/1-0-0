@@ -1,0 +1,26 @@
+{
+  "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+  "type": "object",
+  "self": {
+    "vendor": "com.demo",
+    "name": "ad_interaction",
+    "format": "jsonschema",
+    "version": "1-0-0"
+  },
+  "description": "Data structure for when a user interacts with an advertisement",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "click",
+        "impression",
+        "conversion"
+      ],
+      "description": "The type of ad interaction"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "additionalProperties": false
+}
