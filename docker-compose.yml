@@ -82,7 +82,7 @@ configs:
         use "http" {
           url = "$${ env.CLICKHOUSE_HOST }/?query=INSERT%20INTO%20$${ env.CLICKHOUSE_DATABASE }.$${ env.CLICKHOUSE_TABLE }%20FORMAT%20JSONEachRow"
           content_type = "application/json"
-          headers = "{\"X-ClickHouse-Key\":\"$${ env.CLICKHOUSE_KEY }\",\"X-ClickHouse-User\":\"$${ env.CLICKHOUSE_USER }\"}"
+          headers = "{\"X-ClickHouse-Key\":\"$${ env.CLICKHOUSE_KEY }\",\"X-ClickHouse-User\":\"$${ env.CLICKHOUSE_USER }\",\"User-Agent\":\"snowplow-snowbridge/1.0 (go-http-client/2.0)\"}"
           dynamic_headers = false
           include_timing_headers = false
 
